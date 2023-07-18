@@ -4,6 +4,7 @@ import { TURNS } from '../../utils/constants'
 import Square from '../Square'
 import { IBoard } from './interface'
 import { saveGame } from '../../storage'
+import { useEffect } from 'react'
 
 const Board = ({ board, setBoard, turn, setTurn, setWinner }: IBoard) => {
   const updateBoard = (index: number) => {
@@ -15,7 +16,6 @@ const Board = ({ board, setBoard, turn, setTurn, setWinner }: IBoard) => {
     const newTurn = turn === TURNS.X ? TURNS.O : TURNS.X
     setBoard(newBoard)
     setTurn(newTurn)
-    saveGame(newBoard, newTurn)
     const newWinner = checkWinner(newBoard)
     if (newWinner) {
       confetti()
@@ -27,6 +27,10 @@ const Board = ({ board, setBoard, turn, setTurn, setWinner }: IBoard) => {
       return setWinner(false)
     }
   }
+
+  useEffect(() => {
+    saveGame(board, turn)
+  }, [board, turn])
 
   return (
     <section className='game'>
